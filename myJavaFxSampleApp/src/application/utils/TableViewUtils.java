@@ -10,7 +10,7 @@ import javafx.util.Callback;
 
 public class TableViewUtils {
 	/**
-	 * Integer column À» ¼³Á¤ÇÕ´Ï´Ù. 
+	 * Integer column ì„ ì„¤ì •í•©ë‹ˆë‹¤. 
 	 * @param <E>
 	 * 
 	 * @param tvDeviceInfo
@@ -31,7 +31,7 @@ public class TableViewUtils {
 	}
 
 	/**
-	 * ¹®ÀÚ¿­ column À» ¼³Á¤ÇÕ´Ï´Ù. 
+	 * ë¬¸ìì—´ column ì„ ì„¤ì •í•©ë‹ˆë‹¤. 
 	 * @param <E>
 	 * 
 	 * @param tvDeviceInfo

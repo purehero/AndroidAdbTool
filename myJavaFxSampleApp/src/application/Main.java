@@ -39,8 +39,8 @@ public class Main extends Application {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		//Utils.executorService = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );	// °íÁ¤ °³¼ö »ı¼º, worker °¡ ´õ ¸¹À¸¸é thread »ı¼º
-		Utils.executorService = Executors.newCachedThreadPool();	// worker°¡ ÀÖÀ¸¸é thread »ı¼º, ÀÌÈÄ ÈŞ¸é thread ´Â »èÁ¦
+		Utils.executorService = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );	// ê³ ì • ê°œìˆ˜ ìƒì„±, worker ê°€ ë” ë§ìœ¼ë©´ thread ìƒì„±
+		//Utils.executorService = Executors.newCachedThreadPool();	// workerê°€ ìˆìœ¼ë©´ thread ìƒì„±, ì´í›„ íœ´ë©´ thread ëŠ” ì‚­ì œ
 	}
 	
 	@Override

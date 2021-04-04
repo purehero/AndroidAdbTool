@@ -69,7 +69,7 @@ public class AdbManager {
 			boolean bResult = false;
 			
 			try {
-				dData.setCommant(String.format("'%s' %s...¡ﬂ", app.getAppName(), jobName ));
+				dData.setCommant(String.format("'%s' %s...Ï§ë", app.getAppName(), jobName ));
 				Platform.runLater(viewUpdateRunnable);
 				bResult = workIF.doWork(device, app);
 				
@@ -78,7 +78,7 @@ public class AdbManager {
 			}
 			
 			if( bResult ) {
-				dData.setCommant(String.format("'%s' %s...øœ∑·", app.getAppName(), jobName));
+				dData.setCommant(String.format("'%s' %s...ÏôÑÎ£å", app.getAppName(), jobName));
 			} else {
 				dData.setCommant(String.format("'%s' %s failed...[%s]", app.getAppName(), jobName, device.getFailMessage()));					
 			}				
@@ -207,10 +207,10 @@ public class AdbManager {
 			public void run() {
 				try {
 					dData.getInstance().runCommand( String.format( "shell input keyevent KEYCODE_%s", keycode.toUpperCase() ));
-					dData.setCommant( String.format( "'%s' πˆ∆∞ ≈¨∏Ø", keycode ));
+					dData.setCommant( String.format( "'%s' Î≤ÑÌäº ÌÅ¥Î¶≠", keycode ));
 				} catch (Exception e) {
 					e.printStackTrace();
-					dData.setCommant( String.format( "'%s' πˆ∆∞ ≈¨∏Ø ø¿∑˘", keycode ));
+					dData.setCommant( String.format( "'%s' Î≤ÑÌäº ÌÅ¥Î¶≠ Ïò§Î•ò", keycode ));
 				}
 				
 				Platform.runLater(viewUpdateRunnable);

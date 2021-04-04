@@ -207,7 +207,7 @@ public class MainSceneHandler {
 	}
 
 	/**
-	 * µğ¹ÙÀÌ½ºÀÇ ÀüÃ¼ ¼±ÅÃ/ÇØÁ¦ ¹öÆ°
+	 * ë””ë°”ì´ìŠ¤ì˜ ì „ì²´ ì„ íƒ/í•´ì œ ë²„íŠ¼
 	 * @param obj checkbox object
 	 */
 	private void onHandlerDeviceSelectAll(CheckBox obj) {
@@ -222,10 +222,10 @@ public class MainSceneHandler {
 	}
 	
 	/**
-	 * ÆÄÀÏ ¼±ÅÃ ´ÙÀÌ¾ó·Î±×¸¦ Ç¥½ÃÇÏ¿© ÆÄÀÏÀ» ¼±ÅÃ ¹ŞÀº ÈÄ °á°ú¸¦ ¹İÈ¯ÇÑ´Ù. 
+	 * íŒŒì¼ ì„ íƒ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ í‘œì‹œí•˜ì—¬ íŒŒì¼ì„ ì„ íƒ ë°›ì€ í›„ ê²°ê³¼ë¥¼ ë°˜í™˜í•œë‹¤. 
 	 * 
-	 * @param title ÆÄÀÏ ´ÙÀÌ¾ó·Î±×ÀÇ Å¸ÀÌÆ² ¹®±¸
-	 * @return		¼±ÅÃÇÑ ÆÄÀÏÀÇ °´Ã¼, ¼±ÅÃÇÑ ÆÄÀÏÀÌ ¾øÀ¸¸é null À» ¹İÈ¯ÇÑ´Ù. 
+	 * @param title íŒŒì¼ ë‹¤ì´ì–¼ë¡œê·¸ì˜ íƒ€ì´í‹€ ë¬¸êµ¬
+	 * @return		ì„ íƒí•œ íŒŒì¼ì˜ ê°ì²´, ì„ íƒí•œ íŒŒì¼ì´ ì—†ìœ¼ë©´ null ì„ ë°˜í™˜í•œë‹¤. 
 	 */
 	private File filedialog(String title) {
 		java.awt.FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, FileDialog.LOAD );

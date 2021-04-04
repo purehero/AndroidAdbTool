@@ -18,7 +18,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 
 	/**
 	 *  
-	 * @param info : adb devices ¸í·É¾î·Î ¹ŞÀº ¹®ÀÚ¿­(-l ¿É¼ÇÀ» »ó°ü¾ø´Ù) 
+	 * @param info : adb devices ëª…ë ¹ì–´ë¡œ ë°›ì€ ë¬¸ìì—´(-l ì˜µì…˜ì„ ìƒê´€ì—†ë‹¤) 
 	 * @return null : return null when device info parsing error, otherwise return device instance
 	 */
 	public static AndroidDevice CreateDevice(String info) {
@@ -27,7 +27,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		if( info.startsWith("* daemon")) return null;
 		
 		info = info.trim();
-		if( info.length() < 10 ) return null;	// ´ë·« ÇÑ ¶óÀÎ¿¡ 10ÀÚ ÀÌ»óÀ¸·Î ÆÇ´ÜÇÑ´Ù. 
+		if( info.length() < 10 ) return null;	// ëŒ€ëµ í•œ ë¼ì¸ì— 10ì ì´ìƒìœ¼ë¡œ íŒë‹¨í•œë‹¤. 
 		
 		String tokens[] = info.split(" ");	// adb devices -l 
 		if( tokens.length == 1 ) {			// adb devices
@@ -187,7 +187,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		if( deviceName != null ) { return deviceName; }
 
 		String model = getModel();
-		File tmpNameFile = new File( "supported_devices.tmp" );		// ÀÌÀü °Ë»ö ÀúÀå ÆÄÀÏ¿¡¼­ ÀåÄ¡ ÀÌ¸§À» °Ë»öÇÑ´Ù. 
+		File tmpNameFile = new File( "supported_devices.tmp" );		// ì´ì „ ê²€ìƒ‰ ì €ì¥ íŒŒì¼ì—ì„œ ì¥ì¹˜ ì´ë¦„ì„ ê²€ìƒ‰í•œë‹¤. 
 		if( tmpNameFile.exists()) {
 			FileInputStream fis = null;
 			try {
@@ -201,13 +201,13 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 				try { fis.close(); } catch (IOException e) {}
 			}
 		}
-		if( deviceName == null ) {									// ÀÌÀü °Ë»ö ÀúÀå ÆÄÀÏ¿¡¼­ ÀåÄ¡ ÀÌ¸§À» ¸ø Ã£Àº °æ¿ì
+		if( deviceName == null ) {									// ì´ì „ ê²€ìƒ‰ ì €ì¥ íŒŒì¼ì—ì„œ ì¥ì¹˜ ì´ë¦„ì„ ëª» ì°¾ì€ ê²½ìš°
 			InputStreamReader isr = null;
 			try {
 				isr = new InputStreamReader( AndroidDevice.this.getClass().getClassLoader().getResourceAsStream("supported_devices.csv.out"), "UTF-8");
-				deviceName = searchDeviceName(new BufferedReader( isr ), model );	// ÀüÃ¼ ÀåÄ¡ ÀÌ¸§ ÆÄÀÏ¿¡¼­ ÀåÄ¡ ÀÌ¸§À» °Ë»öÇÑ´Ù. 
+				deviceName = searchDeviceName(new BufferedReader( isr ), model );	// ì „ì²´ ì¥ì¹˜ ì´ë¦„ íŒŒì¼ì—ì„œ ì¥ì¹˜ ì´ë¦„ì„ ê²€ìƒ‰í•œë‹¤. 
 				
-				if( deviceName != null ) {											// ÀüÃ¼ ÀåÄ¡ ÆÄÀÏ¿¡¼­ °Ë»öµÈ °æ¿ì ÀÌÀü °Ë»ö ÀúÀå ÆÄÀÏ¿¡ ÇØ´ç ³»¿ëÀ» ±â·ÏÇÑ´Ù. 
+				if( deviceName != null ) {											// ì „ì²´ ì¥ì¹˜ íŒŒì¼ì—ì„œ ê²€ìƒ‰ëœ ê²½ìš° ì´ì „ ê²€ìƒ‰ ì €ì¥ íŒŒì¼ì— í•´ë‹¹ ë‚´ìš©ì„ ê¸°ë¡í•œë‹¤. 
 					BufferedWriter output = new BufferedWriter(new FileWriter(tmpNameFile, true));
 					output.write(String.format("%s=%s\r\n", deviceName, model ));
 					output.close();
@@ -225,10 +225,10 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 	}
 
 	private String searchDeviceName(BufferedReader br, String model ) throws IOException {
-		String findStr1 = "=" + model;		// ¸ğµ¨ÀÌ ÇÏ³ªÀÎ °æ¿ì
-		String findStr2 = "="+model+",";	// ¸ğµ¨ÀÌ ¿©·¯°í ÀÌ°í Ã³À½¿¡ À§Ä¡ÇÑ °æ¿ì
-		String findStr3 = ","+model+",";	// ¸ğµ¨ÀÌ ¿©·¯°³ ÀÌ°í Áß°£¿¡ À§Ä¡ÇÑ °æ¿ì
-		String findStr4 = ","+model;		// ¸ğµ¨ÀÌ ¿©·¯°³ ÀÌ°í ¸¶Áö¸·¿¡ À§Ä¡ÇÑ °æ¿ì
+		String findStr1 = "=" + model;		// ëª¨ë¸ì´ í•˜ë‚˜ì¸ ê²½ìš°
+		String findStr2 = "="+model+",";	// ëª¨ë¸ì´ ì—¬ëŸ¬ê³  ì´ê³  ì²˜ìŒì— ìœ„ì¹˜í•œ ê²½ìš°
+		String findStr3 = ","+model+",";	// ëª¨ë¸ì´ ì—¬ëŸ¬ê°œ ì´ê³  ì¤‘ê°„ì— ìœ„ì¹˜í•œ ê²½ìš°
+		String findStr4 = ","+model;		// ëª¨ë¸ì´ ì—¬ëŸ¬ê°œ ì´ê³  ë§ˆì§€ë§‰ì— ìœ„ì¹˜í•œ ê²½ìš°
 		
 		String line;
 		while(( line = br.readLine()) != null ) {
@@ -250,7 +250,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 	String battery = "NONE";
 	long nBatteryCheckedTime = 0;
 	public String getBatteryLevel() {				  
-		if( System.currentTimeMillis() - nBatteryCheckedTime < 10000 ) {	// ÀÚÁÖ È£ÃâµÇ´Â °ÍÀ» ¹æÁöÇÏ±â ÀÌÇØ 10 ÃÊ ÀÌ³»ÀÇ Á¤º¸´Â ÀÌÀü°ÍÀ» »ç¿ëÇÏµµ·Ï ÇÑ´Ù.  
+		if( System.currentTimeMillis() - nBatteryCheckedTime < 10000 ) {	// ìì£¼ í˜¸ì¶œë˜ëŠ” ê²ƒì„ ë°©ì§€í•˜ê¸° ì´í•´ 10 ì´ˆ ì´ë‚´ì˜ ì •ë³´ëŠ” ì´ì „ê²ƒì„ ì‚¬ìš©í•˜ë„ë¡ í•œë‹¤.  
 			return battery; 
 		}
 		

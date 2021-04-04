@@ -40,13 +40,13 @@ public class MainSceneController implements Initializable, EventHandler<ActionEv
 		final String CENTER = "CENTER";
 		TableViewUtils.CheckBoxTableColumn	( deviceListTableView, "", 			"selected", 	CENTER,  30,  30, idxCol++, MainSceneController.this );		// check box
 		TableViewUtils.IntegerTableColumn	( deviceListTableView, "No", 		"index", 		CENTER,  35,  40, idxCol++ );		// No.
-		TableViewUtils.StringTableColumn	( deviceListTableView, "´Ü¸»±â ÀÌ¸§", 	"name", 		CENTER, 230, 300, idxCol++ );		// ÀåÄ¡¸í
-		TableViewUtils.StringTableColumn	( deviceListTableView, "¸ðµ¨¸í", 		"model", 		CENTER, 130, 250, idxCol++ );		// ¸ðµ¨¸í
-		TableViewUtils.StringTableColumn	( deviceListTableView, "¹öÀü", 		"osVersion", 	CENTER,  50, 100, idxCol++ );		// OS ¹öÀü
-		TableViewUtils.StringTableColumn	( deviceListTableView, "º£ÅÍ¸®", 		"batteryLevel", CENTER,  50, 100, idxCol++ );		// º£ÅÍ¸® ·¹º§
-		TableViewUtils.StringTableColumn	( deviceListTableView, "¿¬°á»óÅÂ", 	"state", 		CENTER,  50, 100, idxCol++ );		// ¿¬°á »óÅÂ
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ë‹¨ë§ê¸° ì´ë¦„", 	"name", 		CENTER, 230, 300, idxCol++ );		// ìž¥ì¹˜ëª…
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ëª¨ë¸ëª…", 		"model", 		CENTER, 130, 250, idxCol++ );		// ëª¨ë¸ëª…
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ë²„ì „", 		"osVersion", 	CENTER,  50, 100, idxCol++ );		// OS ë²„ì „
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ë² í„°ë¦¬", 		"batteryLevel", CENTER,  50, 100, idxCol++ );		// ë² í„°ë¦¬ ë ˆë²¨
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ì—°ê²°ìƒíƒœ", 	"state", 		CENTER,  50, 100, idxCol++ );		// ì—°ê²° ìƒíƒœ
 		TableViewUtils.StringTableColumn	( deviceListTableView, "AndroidID", "androidID", 	CENTER, 150, 200, idxCol++ );		// AndroidID
-		TableViewUtils.StringTableColumn	( deviceListTableView, "¸Þ¸ð", 		"commant", 		CENTER, 325, 450, idxCol );			// ºñ°í
+		TableViewUtils.StringTableColumn	( deviceListTableView, "ë©”ëª¨", 		"commant", 		CENTER, 325, 450, idxCol );			// ë¹„ê³ 
 	
 		adbManager = new AdbManager();
 		List<AndroidDevice> devices = adbManager.getAndroidDevices();

@@ -43,25 +43,25 @@ public class BundleTool {
 	}
 
 	/**
-	 * Å° ÀúÀå¼Ò ÆÄÀÏ
+	 * í‚¤ ì €ì¥ì†Œ íŒŒì¼
 	 * @return
 	 */
 	public File getKeyStoreFile() { return getResourceFile( KS_RES_NAME, "debug.jks" ); }
 
 	/**
-	 * Å° ÀúÀå¼ÒÀÇ ºñ¹Ğ¹øÈ£
+	 * í‚¤ ì €ì¥ì†Œì˜ ë¹„ë°€ë²ˆí˜¸
 	 * @return
 	 */
 	public String getKeyStorePwd() { return "1q2w3e"; }
 
 	/**
-	 * ¼­¸íÇÏ·Á´Â ¼­¸í Å°ÀÇ º°Äª
+	 * ì„œëª…í•˜ë ¤ëŠ” ì„œëª… í‚¤ì˜ ë³„ì¹­
 	 * @return
 	 */
 	public String getSignAlias() { return "test"; }
 
 	/**
-	 * ¼­¸í Å°ÀÇ ºñ¹Ğ¹øÈ£
+	 * ì„œëª… í‚¤ì˜ ë¹„ë°€ë²ˆí˜¸
 	 * @return
 	 */
 	public String getSignPwd() { return "1q2w3e"; }
