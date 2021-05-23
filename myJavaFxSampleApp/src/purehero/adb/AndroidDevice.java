@@ -1,17 +1,24 @@
 package purehero.adb;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import purehero.utils.Utils;
 
 public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
@@ -311,5 +318,171 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		return sb.toString();
 	}
 
+	int screencapModiType = -1;
+	class ScreencapThread extends Thread implements Runnable {
+		Process process;
+		ImageView imageView;
+		File tmpScreenCapFile = null;
+		
+		public ScreencapThread( AndroidDevice device, ImageView screenImageView ) {
+			try {
+				imageView = screenImageView;
+				
+				if( screencapModiType == -1 ) {
+					process = Runtime.getRuntime().exec( String.format( "adb -s %s shell screencap -p /sdcard/screen.png", serial ) );
+					process.waitFor();
+					
+					tmpScreenCapFile = File.createTempFile( "tmp", ".png" );
+					process = Runtime.getRuntime().exec( String.format( "adb -s %s pull /sdcard/screen.png %s", serial, tmpScreenCapFile.getAbsolutePath() ) );
+					process.waitFor();
+				}
+				
+				process = Runtime.getRuntime().exec( String.format( "adb -s %s shell screencap -p", serial ) );
+				start();
+				process.waitFor();
+				
+			} catch (IOException e) {			
+				e.printStackTrace();
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				
+			} finally {
+				if( process != null ) {
+					process.destroy();
+				}
+			}
+		}
+		
+		@Override
+		public void run() {
+			try {
+				InputStream is = process.getInputStream();
+				
+				ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+				
+				final int BUFFER_LEN = 1024 * 100;	// 100K
+				byte buffer[] = new byte[ BUFFER_LEN ];
+				int nRead = 0;
+				
+				while(( nRead = is.read( buffer, 0, BUFFER_LEN )) > 0 ) {
+					bos.write( buffer, 0, nRead );
+				}
+
+				byte result [] = bos.toByteArray();
+				bos.close();
+								
+				if( screencapModiType == -1 && ( tmpScreenCapFile != null && tmpScreenCapFile.exists())) {
+					 FileInputStream fis = new FileInputStream( tmpScreenCapFile );
+					 nRead = fis.read( buffer, 0, BUFFER_LEN );
+					 fis.close();
+					 
+					 for( int i = 0; i < nRead; i++ ) {
+						 if( result[i] != '\r' && result[i] != '\n' ) continue;
+						 
+						 if( buffer[i] != result[i] ) {
+							if(( buffer[i] == '\n' && buffer[i+1] != '\r' ) && ( result[i] == '\r' && result[i+1] == '\n' )) {
+								// \n -> \r\n 이 되는 경우
+								screencapModiType = 1;
+								break;
+							} else if(( buffer[i] == '\n' && buffer[i+1] != '\r' ) && ( result[i] == '\r' && result[i+1] == '\r' && result[i+2] == '\n')) {
+								// \n -> \r\r\n 이 되는 경우
+								screencapModiType = 2;
+								break;
+							}
+							
+							//System.out.println ( String.format( "imgBuf %d => %x %x %x", i, buffer[i], buffer[i+1], buffer[i+2] ));
+							//System.out.println ( String.format( "cmdBuf %d => %x %x %x", i, result[i], result[i+1], result[i+2] ));
+						 }
+					 }
+					 fis = new FileInputStream( tmpScreenCapFile );
+					 Image image = new Image( fis );
+					 fis.close();
+					 
+					 imageView.setPreserveRatio(true);
+					 imageView.setImage( image );
+					 
+					 tmpScreenCapFile.delete();
+				}
+				
+				// result array 에서 0x0D, 0x0D, 0x0A 값을 0x0A 로 치환해 준다. 
+				bos = new ByteArrayOutputStream();
+				for( int i = 0; i < result.length - 3; i++ ) {
+					if( screencapModiType == 1 ) { // \n -> \r\n 이 되는 경우
+						if( result[i] == '\r' && result[i+1] == '\n' ) {
+							//System.out.println ( String.format( "%d => %x %x %x", i, result[i], result[i+1], result[i+2] ));
+							bos.write( '\n' ); i+=1;
+						} else {
+							bos.write( result[i] );
+						}
+					} else if( screencapModiType == 2 ) { // \n -> \r\r\n 이 되는 경우
+						if( result[i] == '\r' && result[i+1] == '\r' && result[i+2] == '\n' ) {
+							//System.out.println ( String.format( "%d => %x %x %x", i, result[i], result[i+1], result[i+2] ));
+							bos.write( '\n' ); i+=2;
+						} else {
+							bos.write( result[i] );
+						}
+					} else {
+						bos.write( result[i] );
+					}
+				}
+				
+				byte finalResult [] = bos.toByteArray();
+
+				Image image = new Image( new ByteArrayInputStream( finalResult ));
+				imageView.setImage( image );
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}				
+		}
+	};
+		
+	public void screencap(ImageView screenImageView) {
+		new ScreencapThread( this, screenImageView );
+	}
+
+	public void swipe( Point p1, Point p2, long duration ) { swipe( p1.x, p1.y, p2.x, p2.y, duration ); }
+	public void swipe( int x1, int y1, int x2, int y2, long duration ) {
+		try {
+			runCommand( String.format( "shell input swipe %d %d %d %d %d", x1, y1, x2, y2, duration ));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
+	public void touch(Point point ) { touch( point.x, point.y ); }
+	public void touch( int x, int y) {
+		try {
+			runCommand( String.format( "shell input tap %d %d", x, y ));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String getSerialNumber() {
+		return serial;
+	}
+
+	@Override
+	public Dimension getScreenSize() {
+		try {
+			for( String line : runCommand("shell wm size")) {
+				if( line.startsWith("Physical size:")) {
+					String token[] = line.split(" ");
+					if( token.length > 2 ) {
+						int idx = token[2].indexOf("x");
+						if( idx > 0 ) {
+							return new Dimension( Integer.valueOf( token[2].substring(0,idx)), Integer.valueOf( token[2].substring(idx+1)));
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
 }

@@ -6,17 +6,22 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
+import application.screen.ScreenSceneController;
 import application.utils.CheckBoxTableCellEx;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import purehero.adb.AdbManager;
 import purehero.adb.AndroidAPP;
 import purehero.adb.AndroidDeviceDataIF;
@@ -33,16 +38,20 @@ public class MainSceneHandler {
 	}
 
 	public void handle(ActionEvent event) {
-		Object obj = event.getSource();
+		final Object obj = event.getSource();
 		
-		if( obj instanceof CheckBox ) 					{ handleCheckBox(( CheckBox ) obj);
-		} else if( obj instanceof CheckMenuItem ) 		{ handleCheckMenuItem(( CheckMenuItem ) obj);
-		} else if( obj instanceof MenuItem ) 			{ handleMenuItem(( MenuItem ) obj);
-		} else if( obj instanceof CheckBoxTableCellEx ) { handleCheckBoxTableCellEx( ( CheckBoxTableCellEx<?, ?> ) obj );
-		} else if( obj instanceof Button ) 				{ handleButton(( Button ) obj);
-		} else {
-			System.out.println( "handle : " + obj.toString());
-		}
+		Utils.executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				if( obj instanceof CheckBox ) 					{ handleCheckBox(( CheckBox ) obj);
+				} else if( obj instanceof CheckMenuItem ) 		{ handleCheckMenuItem(( CheckMenuItem ) obj);
+				} else if( obj instanceof MenuItem ) 			{ handleMenuItem(( MenuItem ) obj);
+				} else if( obj instanceof CheckBoxTableCellEx ) { handleCheckBoxTableCellEx( ( CheckBoxTableCellEx<?, ?> ) obj );
+				} else if( obj instanceof Button ) 				{ handleButton(( Button ) obj);
+				} else {
+					System.out.println( "handle : " + obj.toString());
+				}
+			}});
 	}
 	
 	private void handleButton(Button obj) {
@@ -91,8 +100,56 @@ public class MainSceneHandler {
 		case "ID_MENUITEM_APP_EXIT"				: onHandleMenuItemAppForceExit(); break;
 		case "ID_MENUITEM_APP_REINSTALL_RUN" 	: onHandleMenuItemAppReinstallRun(); break;
 		case "ID_MENUITEM_APP_INFO_COPY"		: onHandleMenuItemAppInfoCopy(); break;
+		case "ID_MENUITEM_SCREEN_VIEW"			: onHandleMenuItemScreenView(); break;
+		case "ID_MENUITEM_OPEN_SHELL"			: onHandleMenuItemOpenShell(); break;
 		default : System.out.println( "handleMenuItem : " + obj.toString());
 		}
+	}
+
+	private void onHandleMenuItemOpenShell() {
+		AndroidDeviceDataIF data = deviceListTableView.getSelectionModel().getSelectedItem();
+		if( data == null ) return;
+		
+		Utils.executorService.submit( new Runnable() {
+
+			@Override
+			public void run() {
+				String cmd = "cmd.exe /c start";
+				String prog = String.format( "%s adb -s %s shell", cmd, data.getSerialNumber() );
+				
+				try {
+					Runtime.getRuntime().exec( prog );
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}});
+	}
+
+	private void onHandleMenuItemScreenView() {
+		AndroidDeviceDataIF data = deviceListTableView.getSelectionModel().getSelectedItem();
+		if( data == null ) return;
+		
+		Platform.runLater( new Runnable() {
+			@Override
+			public void run() {
+				try {
+					FXMLLoader loader = new FXMLLoader( getClass().getResource( "screen/ScreenScene.fxml" ));
+					
+					Stage stage = new Stage();
+					stage.setTitle( String.format( "%s ( Android %s )", data.getModel(), data.getOsVersion()) );
+					stage.setScene( new Scene( loader.load() ));
+					
+					ScreenSceneController ctrl = loader.getController();
+					ctrl.setDevice( data );
+					
+					stage.setOnCloseRequest( event-> { ctrl.terminate(); });
+					stage.show();
+								
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}});
+		
 	}
 
 	private void onHandleMenuItemAppInfoCopy() {

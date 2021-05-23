@@ -213,7 +213,9 @@ public class AdbManager {
 					dData.setCommant( String.format( "'%s' 버튼 클릭 오류", keycode ));
 				}
 				
-				Platform.runLater(viewUpdateRunnable);
+				if( viewUpdateRunnable != null ) {
+					Platform.runLater(viewUpdateRunnable);
+				}
 			}};
 	}
 }

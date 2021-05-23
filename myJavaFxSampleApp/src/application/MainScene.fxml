@@ -172,6 +172,38 @@
                         </BorderPane>
                      </graphic>
                   </MenuItem>
+                  <MenuItem fx:id="ID_MENUITEM_SCREEN_VIEW" mnemonicParsing="false" onAction="#handle">
+                     <graphic>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label text="화면보기" BorderPane.alignment="CENTER" />
+                           </left>
+                           <right>
+                              <Label alignment="CENTER_RIGHT" text="Screen view" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </Label>
+                           </right>
+                        </BorderPane>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem fx:id="ID_MENUITEM_OPEN_SHELL" mnemonicParsing="false" onAction="#handle">
+                     <graphic>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label text="명령어 창열기" BorderPane.alignment="CENTER" />
+                           </left>
+                           <right>
+                              <Label alignment="CENTER_RIGHT" text="ADB Shell" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </Label>
+                           </right>
+                        </BorderPane>
+                     </graphic>
+                  </MenuItem>
               </items>
             </ContextMenu>
          </contextMenu>

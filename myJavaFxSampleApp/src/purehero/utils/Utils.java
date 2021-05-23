@@ -51,8 +51,12 @@ public class Utils {
 			
 			try {
 				process.waitFor();
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				
+			} finally {
+				process.destroy();
 			}
 			
 		} catch (IOException e) {

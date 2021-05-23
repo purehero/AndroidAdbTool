@@ -1,5 +1,7 @@
 package purehero.adb;
 
+import java.awt.Dimension;
+
 public interface AndroidDeviceDataIF {
 	public Boolean 	getSelected();
 	public void 	setSelected( boolean bSelected );
@@ -11,6 +13,8 @@ public interface AndroidDeviceDataIF {
 	public String getBatteryLevel();
 	public String getState();
 	public String getAndroidID();
+	public String getSerialNumber();
+	public Dimension getScreenSize();
 	
 	public String 	getCommant();
 	public void		setCommant( String msg );
