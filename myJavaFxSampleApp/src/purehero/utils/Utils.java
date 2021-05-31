@@ -74,4 +74,8 @@ public class Utils {
 				return Utils.runCommand(command, grap);
 			}} );
 	}
+	
+	public static boolean isWindows() {
+		return System.getProperty( "os.name" ).contains( "Window" );
+	}
 }

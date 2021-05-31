@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import purehero.adb.AdbManager;
 import purehero.adb.AndroidAPP;
 import purehero.adb.AndroidDeviceDataIF;
+import purehero.adb.Scrcpy;
 import purehero.utils.Utils;
 
 public class MainSceneHandler {
@@ -129,27 +130,30 @@ public class MainSceneHandler {
 		AndroidDeviceDataIF data = deviceListTableView.getSelectionModel().getSelectedItem();
 		if( data == null ) return;
 		
-		Platform.runLater( new Runnable() {
-			@Override
-			public void run() {
-				try {
-					FXMLLoader loader = new FXMLLoader( getClass().getResource( "screen/ScreenScene.fxml" ));
-					
-					Stage stage = new Stage();
-					stage.setTitle( String.format( "%s ( Android %s )", data.getModel(), data.getOsVersion()) );
-					stage.setScene( new Scene( loader.load() ));
-					
-					ScreenSceneController ctrl = loader.getController();
-					ctrl.setDevice( data );
-					
-					stage.setOnCloseRequest( event-> { ctrl.terminate(); });
-					stage.show();
-								
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}});
-		
+		if( Utils.isWindows()) {
+			Utils.runCommand( String.format( "%s -s %s", new Scrcpy().getFile().getAbsolutePath(), data.getSerialNumber() ));
+		} else {
+			Platform.runLater( new Runnable() {
+				@Override
+				public void run() {
+					try {
+						FXMLLoader loader = new FXMLLoader( getClass().getResource( "screen/ScreenScene.fxml" ));
+						
+						Stage stage = new Stage();
+						stage.setTitle( String.format( "%s ( Android %s )", data.getModel(), data.getOsVersion()) );
+						stage.setScene( new Scene( loader.load() ));
+						
+						ScreenSceneController ctrl = loader.getController();
+						ctrl.setDevice( data );
+						
+						stage.setOnCloseRequest( event-> { ctrl.terminate(); });
+						stage.show();
+									
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}});
+		}
 	}
 
 	private void onHandleMenuItemAppInfoCopy() {
