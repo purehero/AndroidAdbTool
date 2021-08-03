@@ -11,10 +11,12 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.202-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainSceneController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainSceneController">
    <center>
       <TableView fx:id="deviceListTableView" BorderPane.alignment="CENTER">
         <columns>
@@ -254,4 +256,37 @@
          </right>
       </BorderPane>
    </top>
+   <bottom>
+      <BorderPane BorderPane.alignment="CENTER">
+         <left>
+            <Label text="지정 파일 :  " BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+               </BorderPane.margin>
+            </Label>
+         </left>
+         <center>
+            <TextField fx:id="selectiveFileTextField" editable="false" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </BorderPane.margin>
+            </TextField>
+         </center>
+         <right>
+            <HBox BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="ID_BTN_SELECTIVE_FILE_CLEAR" mnemonicParsing="false" onAction="#handle" text="사용안함">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="ID_BTN_SELECTIVE_FILE_CHANGE" mnemonicParsing="false" onAction="#handle" text="파일변경" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+               </BorderPane.margin>
+            </HBox>
+         </right>
+      </BorderPane>
+   </bottom>
 </BorderPane>

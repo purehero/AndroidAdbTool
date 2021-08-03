@@ -22,8 +22,8 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Purehero Android Device Tool(v1.0)");
-			primaryStage.setMinWidth(1000);
-			primaryStage.setMaxHeight(400);
+			primaryStage.setMinWidth(800);
+			primaryStage.setMaxHeight(600);
 			primaryStage.show();
 			
 		} catch(Exception e) {

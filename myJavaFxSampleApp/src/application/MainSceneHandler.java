@@ -32,10 +32,13 @@ public class MainSceneHandler {
 
 	private final MainSceneController mainSceneController;
 	private final TableView<AndroidDeviceDataIF> deviceListTableView;
+	private File selectiveFile = null;
 	
 	public MainSceneHandler(MainSceneController mainSceneController, TableView<AndroidDeviceDataIF> deviceListTableView) {
 		this.deviceListTableView = deviceListTableView;
 		this.mainSceneController = mainSceneController;
+		
+		mainSceneController.setSelectiveFileTextField( selectiveFile );
 	}
 
 	public void handle(ActionEvent event) {
@@ -59,8 +62,24 @@ public class MainSceneHandler {
 		switch( obj.getId()) {
 		case "ID_BTN_COMMAND_ACTION" 	: onHandleButtonCommnadAction(); break;
 		case "ID_BTN_KEY_CODE_SEND"		: onHandleButtonKeyCodeSend(); break;
+		case "ID_BTN_SELECTIVE_FILE_CLEAR" 	: onHandleButtonSelectiveFileClear(); break;
+		case "ID_BTN_SELECTIVE_FILE_CHANGE" : onHandleButtonSelectiveFileChange(); break; 
 		default : System.out.println( "handleButton : " + obj.toString());
 		}
+	}
+
+	private void onHandleButtonSelectiveFileChange() {
+		File selectedFile = filedialog( "지정 파일 선택", true );
+		if( selectedFile != null ) {
+			selectiveFile = selectedFile;
+			
+			mainSceneController.setSelectiveFileTextField( selectiveFile );
+		}
+	}
+
+	private void onHandleButtonSelectiveFileClear() {
+		selectiveFile = null;
+		mainSceneController.setSelectiveFileTextField( selectiveFile );		
 	}
 
 	private void onHandleButtonKeyCodeSend() {
@@ -288,7 +307,15 @@ public class MainSceneHandler {
 	 * @param title 파일 다이얼로그의 타이틀 문구
 	 * @return		선택한 파일의 객체, 선택한 파일이 없으면 null 을 반환한다. 
 	 */
-	private File filedialog(String title) {
+	private File filedialog(String title ) {
+		return filedialog( title, false );
+	}
+	
+	private File filedialog(String title, boolean bForceDialog ) {
+		if( selectiveFile != null && !bForceDialog ) {
+			return selectiveFile;
+		}
+		
 		java.awt.FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, FileDialog.LOAD );
 		dialog.setFile("*.apk; *.aab");
 		dialog.setFilenameFilter(new FilenameFilter() {

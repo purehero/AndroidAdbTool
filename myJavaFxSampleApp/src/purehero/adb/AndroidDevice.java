@@ -125,7 +125,8 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 	synchronized private void makeApksFromAabFile(AndroidAPP app, File bundletool ) throws InterruptedException, ExecutionException {
 		File targetFile = new File( app.getAbsolutePath()+".apks" );
 		if( !targetFile.exists()) {
-			Utils.runCommandJob( String.format( "java -jar %s build-apks --bundle=%s --local-testing --overwrite --output=%s", bundletool.getAbsolutePath(), app.getAbsolutePath(), targetFile.getAbsolutePath() )).get();
+			//Utils.runCommandJob( String.format( "java -jar %s build-apks --bundle=%s --local-testing --overwrite --output=%s", bundletool.getAbsolutePath(), app.getAbsolutePath(), targetFile.getAbsolutePath() )).get();
+			Utils.runCommandJob( String.format( "java -jar %s build-apks --bundle=%s --overwrite --output=%s", bundletool.getAbsolutePath(), app.getAbsolutePath(), targetFile.getAbsolutePath() )).get();
 		}
 	}
 

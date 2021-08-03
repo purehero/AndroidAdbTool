@@ -13,7 +13,11 @@ public class Scrcpy {
 		File scrcpyFolder 	= new File( tmpFolder, "SCRCPY-FOLDER" );
 		File scrcpyFile  	= new File( scrcpyFolder, "scrcpy.exe" );
 		
-		if( scrcpyFile.exists()) return scrcpyFile;
+		if( scrcpyFile.exists()) {
+			if( scrcpyFolder.listFiles().length > 12 ) {
+				return scrcpyFile;
+			}
+		}
 		
 		final int bufferSize = 1024*1024;
 		byte buffer [] = new byte[ bufferSize ];
@@ -33,6 +37,8 @@ public class Scrcpy {
 					if( !parent.exists()) {
 						parent.mkdirs();
 					}
+					
+					if( file.exists()) file.delete();
 					
 					try( FileOutputStream fos = new FileOutputStream( file )) {
 						int nRead = 0;

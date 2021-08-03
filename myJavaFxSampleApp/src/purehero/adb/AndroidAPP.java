@@ -24,12 +24,14 @@ public class AndroidAPP {
 	static File 	previous_app = null;
 	static String 	previous_packageName = null;
 	static String 	previous_launcherActivityName = null;
+	static String 	previous_appName = null;
 	
 	public AndroidAPP( File app ) {
 		if( previous_app != null ) {	// 동일한 파일을 반복적으로 선택하였을 경우 다시 앱 정보를 파싱하지 않아도 되도록 이전 값들을 저장해 놓는다. 
 			if( previous_app.getAbsolutePath().compareTo( app.getAbsolutePath()) == 0 ) {
 				this.packageName = previous_packageName;
 				this.launcherActivityName = previous_launcherActivityName;
+				this.appName = previous_appName;
 				this.app = app;
 				return;
 			}
@@ -41,6 +43,7 @@ public class AndroidAPP {
 		previous_app = app;
 		previous_packageName = packageName;
 		previous_launcherActivityName = launcherActivityName;
+		previous_appName = appName;
 	}
 	
 	public void getAppInfos() {

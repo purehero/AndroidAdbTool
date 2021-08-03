@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import purehero.adb.AdbManager;
 import purehero.adb.AndroidDevice;
 import purehero.adb.AndroidDeviceDataIF;
@@ -32,6 +34,9 @@ public class MainSceneController implements Initializable, EventHandler<ActionEv
 	
 	@FXML
 	private ComboBox<String> adbCommandComboBox;
+	
+	@FXML
+	private TextField selectiveFileTextField;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,4 +83,11 @@ public class MainSceneController implements Initializable, EventHandler<ActionEv
 			}} );
 	}
 	
+	public void setSelectiveFileTextField( File selectiveFile ) {
+		if( selectiveFile == null ) {
+			selectiveFileTextField.setText("no selected file");
+		} else {
+			selectiveFileTextField.setText( selectiveFile.getAbsolutePath());
+		}
+	}
 }
