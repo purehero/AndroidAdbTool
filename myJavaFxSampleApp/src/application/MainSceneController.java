@@ -48,9 +48,9 @@ public class MainSceneController implements Initializable, EventHandler<ActionEv
 		TableViewUtils.StringTableColumn	( deviceListTableView, "단말기 이름", 	"name", 		CENTER, 230, 300, idxCol++ );		// 장치명
 		TableViewUtils.StringTableColumn	( deviceListTableView, "모델명", 		"model", 		CENTER, 130, 250, idxCol++ );		// 모델명
 		TableViewUtils.StringTableColumn	( deviceListTableView, "버전", 		"osVersion", 	CENTER,  50, 100, idxCol++ );		// OS 버전
-		TableViewUtils.StringTableColumn	( deviceListTableView, "베터리", 		"batteryLevel", CENTER,  50, 100, idxCol++ );		// 베터리 레벨
 		TableViewUtils.StringTableColumn	( deviceListTableView, "연결상태", 	"state", 		CENTER,  50, 100, idxCol++ );		// 연결 상태
-		TableViewUtils.StringTableColumn	( deviceListTableView, "AndroidID", "androidID", 	CENTER, 150, 200, idxCol++ );		// AndroidID
+		TableViewUtils.StringTableColumn	( deviceListTableView, "베터리", 		"batteryLevel", 	CENTER,  50, 100, idxCol++ );		// 베터리 레벨
+		TableViewUtils.StringTableColumn	( deviceListTableView, "베터리온도", 	"batteryTemperature", 	CENTER,  50, 100, idxCol++ );		// 베터리 온도
 		TableViewUtils.StringTableColumn	( deviceListTableView, "메모", 		"commant", 		CENTER, 325, 450, idxCol );			// 비고
 	
 		adbManager = new AdbManager();

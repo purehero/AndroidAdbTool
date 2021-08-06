@@ -253,26 +253,35 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 	public String getModel() { return properties.get("ro.product.model"); }
 
 	@Override
-	public String getOsVersion() { return properties.get("ro.build.version.release"); }
+	public String getOsVersion() { return "AOS " + properties.get("ro.build.version.release"); }
 
-	String battery = "NONE";
+	String batteryLevel 		= "-1%";
+	String batteryTemperature	= "-1℃";
 	long nBatteryCheckedTime = 0;
-	public String getBatteryLevel() {				  
+	private void getBatteryInfo() {				  
 		if( System.currentTimeMillis() - nBatteryCheckedTime < 10000 ) {	// 자주 호출되는 것을 방지하기 이해 10 초 이내의 정보는 이전것을 사용하도록 한다.  
-			return battery; 
+			return; 
 		}
 		
 		try {
-			for( String line : runCommand("shell dumpsys battery", "level")) {
-				battery = line.replace( "level:", "").trim();
-				break;
+			for( String line : runCommand("shell dumpsys battery")) {
+				line = line.trim();
+				
+				if( line.startsWith("level:")) {
+					batteryLevel = line.replace( "level:", "").trim() + "%";
+					
+				} else if( line.startsWith("temperature:")) {
+					int temperature = Integer.valueOf( line.replace( "temperature:", "").trim() );
+					batteryTemperature = String.format( "%.1f℃", (float)(temperature/10.0));
+				}				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();			
 		}
 		nBatteryCheckedTime = System.currentTimeMillis();
-		return battery;
 	}
+	public String getBatteryLevel() 		{ getBatteryInfo(); return batteryLevel; }
+	public String getBatteryTemperature() 	{ getBatteryInfo(); return batteryTemperature; }
 
 	private boolean selected = false;
 	public Boolean 	getSelected() { return selected; }
@@ -313,6 +322,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		sb.append(getModel());sb.append(" ");
 		sb.append(getOsVersion());sb.append(" ");
 		sb.append(getBatteryLevel());sb.append(" ");
+		sb.append(getBatteryTemperature());sb.append(" ");
 		sb.append(getState());sb.append(" ");
 		sb.append(getAndroidID());sb.append(" ");
 		sb.append(getCommant());sb.append(" ");

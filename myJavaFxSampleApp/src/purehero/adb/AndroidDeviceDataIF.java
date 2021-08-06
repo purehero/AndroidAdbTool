@@ -11,6 +11,7 @@ public interface AndroidDeviceDataIF {
 	public String getModel();
 	public String getOsVersion();
 	public String getBatteryLevel();
+	public String getBatteryTemperature();
 	public String getState();
 	public String getAndroidID();
 	public String getSerialNumber();
