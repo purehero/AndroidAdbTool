@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import purehero.utils.SupportedDevicesTool;
 import purehero.utils.Utils;
 
 public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
@@ -195,7 +196,7 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		if( deviceName != null ) { return deviceName; }
 
 		String model = getModel();
-		File tmpNameFile = new File( "supported_devices.tmp" );		// 이전 검색 저장 파일에서 장치 이름을 검색한다. 
+		File tmpNameFile = new File( Utils.getWorkTempFolder(), "supported_devices.tmp" );		// 이전 검색 저장 파일에서 장치 이름을 검색한다. 
 		if( tmpNameFile.exists()) {
 			FileInputStream fis = null;
 			try {
@@ -212,7 +213,12 @@ public class AndroidDevice implements AndroidDeviceIF, AndroidDeviceDataIF {
 		if( deviceName == null ) {									// 이전 검색 저장 파일에서 장치 이름을 못 찾은 경우
 			InputStreamReader isr = null;
 			try {
-				isr = new InputStreamReader( AndroidDevice.this.getClass().getClassLoader().getResourceAsStream("supported_devices.csv.out"), "UTF-8");
+				File supportedDevicesFile = new File( Utils.getWorkTempFolder(), "supported_devices.csv.out" );
+				if( !supportedDevicesFile.exists()) {
+					SupportedDevicesTool.updateDataFromURL();
+				}
+				//isr = new InputStreamReader( AndroidDevice.this.getClass().getClassLoader().getResourceAsStream("supported_devices.csv.out"), "UTF-8");
+				isr = new InputStreamReader( new FileInputStream( supportedDevicesFile ), "UTF-8");
 				deviceName = searchDeviceName(new BufferedReader( isr ), model );	// 전체 장치 이름 파일에서 장치 이름을 검색한다. 
 				
 				if( deviceName != null ) {											// 전체 장치 파일에서 검색된 경우 이전 검색 저장 파일에 해당 내용을 기록한다. 

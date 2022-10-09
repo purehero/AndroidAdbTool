@@ -64,7 +64,7 @@ public class MainSceneController implements Initializable, EventHandler<ActionEv
 		deviceKeyCmdChoiceBox.setValue("POWER");
 		
 		adbCommandComboBox.setItems( FXCollections.observableArrayList( 
-				"DEVICE LIST RELOAD", "ADB KILL-SERVER", "ADB START-SERVER" ));
+				"DEVICE LIST RELOAD", "ADB KILL-SERVER", "ADB START-SERVER","UPDATE SUPPORTED DEVICES" ));
 		adbCommandComboBox.setValue("DEVICE LIST RELOAD");
 		
 		handler = new MainSceneHandler( this, deviceListTableView );

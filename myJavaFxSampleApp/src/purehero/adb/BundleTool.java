@@ -7,15 +7,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BundleTool {
-	private static final String BUNDLETOOL_RES_NAME = "bundletool-all-1.5.0.jar";
+	private static final String BUNDLETOOL_PRE_NAME = "bundletool-all-1.5.0.jar";
+	private static final String BUNDLETOOL_RES_NAME = "bundletool-all-1.10.0.jar";
 	private static final String KS_RES_NAME 		= "test.jks";
 	
-	public File getBundletoolFile() { return getResourceFile( BUNDLETOOL_RES_NAME, "bundletool.jar" ); }
+	public File getBundletoolFile() { return getResourceFile( BUNDLETOOL_RES_NAME, BUNDLETOOL_RES_NAME ); }
 	
 	private File getResourceFile( String resFilename, String outFilename ) {
 		File tmpFolder = new File( System.getProperty("java.io.tmpdir"));
-		File bundletoolFile = new File( tmpFolder, outFilename );
-		if( bundletoolFile.exists()) return bundletoolFile;
+		File bundletoolFile = new File( tmpFolder, BUNDLETOOL_PRE_NAME );
+		if( bundletoolFile.exists()) {
+			bundletoolFile.delete();
+		}
+		
+		bundletoolFile = new File( tmpFolder, outFilename );
+		if( bundletoolFile.exists()) {
+			return bundletoolFile;
+		}
 		
 		final int bufferSize = 1024*1024;
 		

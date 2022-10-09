@@ -19,11 +19,13 @@ public class AndroidAPP {
 	final File app;
 	String packageName = null;
 	String launcherActivityName = null;
+	String mainActivityName = null;
 	String appName = null;
 	
 	static File 	previous_app = null;
 	static String 	previous_packageName = null;
 	static String 	previous_launcherActivityName = null;
+	static String 	previous_mainActivityName = null;
 	static String 	previous_appName = null;
 	
 	public AndroidAPP( File app ) {
@@ -31,6 +33,7 @@ public class AndroidAPP {
 			if( previous_app.getAbsolutePath().compareTo( app.getAbsolutePath()) == 0 ) {
 				this.packageName = previous_packageName;
 				this.launcherActivityName = previous_launcherActivityName;
+				this.mainActivityName = previous_mainActivityName;
 				this.appName = previous_appName;
 				this.app = app;
 				return;
@@ -44,16 +47,22 @@ public class AndroidAPP {
 		previous_packageName = packageName;
 		previous_launcherActivityName = launcherActivityName;
 		previous_appName = appName;
+		previous_mainActivityName = mainActivityName;
 	}
 	
 	public void getAppInfos() {
 		if( isApk()) {
-			parseApkInfos();
+			parseApkInfos( app.getAbsolutePath() );
 		} else if( isAab()){
 			parseAabInfos();
+		} else if( isApks()) {
+			parserApksInfos();
 		}
 	}
 	
+	private void parserApksInfos() {
+		
+	}
 	
 	private void parseAabInfos() {
 		BundleTool bt = new BundleTool();
@@ -99,9 +108,9 @@ public class AndroidAPP {
 		return ret;
 	}
 
-	private void parseApkInfos() {
+	private void parseApkInfos( String apkPath ) {
 		try {
-			List<String> result = Utils.runCommandJob("aapt2 dump badging " + app.getAbsolutePath()).get();
+			List<String> result = Utils.runCommandJob("aapt2 dump badging " + apkPath).get();
 			for( String line : result ) {
 				
 				int idx = 0;
@@ -236,6 +245,7 @@ public class AndroidAPP {
 	public String getFilename() 	{ return app.getName(); }
 	public String getAppName() 		{ return appName == null ? app.getName() : appName; }
 	
+	public boolean isApks(){ return app.getName().toUpperCase().endsWith(".APKS"); } 
 	public boolean isAab() { return app.getName().toUpperCase().endsWith(".AAB"); }
 	public boolean isApk() { return app.getName().toUpperCase().endsWith(".APK"); }
 }

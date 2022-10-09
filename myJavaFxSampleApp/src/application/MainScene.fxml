@@ -206,6 +206,39 @@
                         </BorderPane>
                      </graphic>
                   </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="ID_MENUITEM_FILE_PUSH_PULL" mnemonicParsing="false" onAction="#handle">
+                     <graphic>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label text="파일 전송" BorderPane.alignment="CENTER" />
+                           </left>
+                           <right>
+                              <Label alignment="CENTER_RIGHT" text="Push/Pull" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </Label>
+                           </right>
+                        </BorderPane>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem fx:id="ID_MENUITEM_INSTALL_APPLIST" mnemonicParsing="false" onAction="#handle">
+                     <graphic>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label text="앱 리스트" BorderPane.alignment="CENTER" />
+                           </left>
+                           <right>
+                              <Label alignment="CENTER_RIGHT" text="AppList" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </Label>
+                           </right>
+                        </BorderPane>
+                     </graphic>
+                  </MenuItem>
               </items>
             </ContextMenu>
          </contextMenu>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.filetransfer.FileTransferController">
+   <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <center>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+               <children>
+                  <TreeView fx:id="localDirectoryTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                  <ListView fx:id="localFileListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+               </children>
+            </HBox>
+         </center>
+         <top>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="로컬 디스크" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+      </BorderPane>
+      <VBox alignment="CENTER" maxWidth="50.0" minWidth="50.0" prefWidth="50.0">
+         <children>
+            <Button fx:id="ID_BTN_PUSH" disable="true" mnemonicParsing="false" onAction="#handle" text="&gt;&gt;">
+               <VBox.margin>
+                  <Insets bottom="100.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ID_BTN_PULL" disable="true" mnemonicParsing="false" onAction="#handle" text="&lt;&lt;" />
+         </children>
+      </VBox>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <center>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+               <children>
+                  <TreeView fx:id="deviceDirectoryTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                  <ListView fx:id="deviceFileListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+               </children>
+            </HBox>
+         </center>
+         <top>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="디바이스 디스크" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+      </BorderPane>
+   </children>
+</HBox>

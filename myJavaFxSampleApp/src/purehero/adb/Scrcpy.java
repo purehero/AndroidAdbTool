@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import purehero.utils.Utils;
+
 public class Scrcpy {
 	public File getFile() {
-		File tmpFolder 		= new File( System.getProperty("java.io.tmpdir"));
-		File scrcpyFolder 	= new File( tmpFolder, "SCRCPY-FOLDER" );
-		File scrcpyFile  	= new File( scrcpyFolder, "scrcpy.exe" );
+		File scrcpyFolder 	= Utils.getWorkTempFolder();
+		File scrcpyFile  	= new File( Utils.getWorkTempFolder(), "scrcpy.exe" );
 		
 		if( scrcpyFile.exists()) {
 			if( scrcpyFolder.listFiles().length > 12 ) {
@@ -22,7 +23,7 @@ public class Scrcpy {
 		final int bufferSize = 1024*1024;
 		byte buffer [] = new byte[ bufferSize ];
 		
-		try ( InputStream is = Scrcpy.this.getClass().getClassLoader().getResourceAsStream( "scrcpy-win64-v1.17.zip" )) {
+		try ( InputStream is = Scrcpy.this.getClass().getClassLoader().getResourceAsStream( "scrcpy-win64-v1.23.zip" )) {
 			
 			ZipEntry zipEntry = null;
 			ZipInputStream zis = new ZipInputStream(is);

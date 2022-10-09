@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import application.apps.DeviceAppListController;
+import application.filetransfer.FileTransferController;
 import application.screen.ScreenSceneController;
 import application.utils.CheckBoxTableCellEx;
 import javafx.application.Platform;
@@ -26,6 +28,7 @@ import purehero.adb.AdbManager;
 import purehero.adb.AndroidAPP;
 import purehero.adb.AndroidDeviceDataIF;
 import purehero.adb.Scrcpy;
+import purehero.utils.SupportedDevicesTool;
 import purehero.utils.Utils;
 
 public class MainSceneHandler {
@@ -55,7 +58,7 @@ public class MainSceneHandler {
 				} else {
 					System.out.println( "handle : " + obj.toString());
 				}
-			}});
+			}});		
 	}
 	
 	private void handleButton(Button obj) {
@@ -99,6 +102,7 @@ public class MainSceneHandler {
 			break;
 		case "ADB KILL-SERVER" 	: Utils.runCommand("adb kill-server"); break;
 		case "ADB START-SERVER" : Utils.runCommand("adb start-server"); break;
+		case "UPDATE SUPPORTED DEVICES" : SupportedDevicesTool.updateDataFromURL(); break;
 		default : System.out.println( "onHandleButtonCommnadAction : " + key );
 		}
 	}
@@ -112,18 +116,72 @@ public class MainSceneHandler {
 	
 	private void handleMenuItem(MenuItem obj) {
 		switch( obj.getId()) {
-		case "ID_MENUITEM_APP_INSTALL" 		: onHandleMenuItemAppInstall(); break;
-		case "ID_MENUITEM_APP_UNINSTALL" 	: onHandleMenuItemAppUninstall(); break;
-		case "ID_MENUITEM_APP_UPDATE" 		: onHandleMenuItemAppUpdate(); break;
-		case "ID_MENUITEM_APP_REINSTALL"	: onHandleMenuItemAppReinstall(); break;
-		case "ID_MENUITEM_APP_RUNNING"		: onHandleMenuItemAppRunning(); break;
+		case "ID_MENUITEM_APP_INSTALL" 			: onHandleMenuItemAppInstall(); break;
+		case "ID_MENUITEM_APP_UNINSTALL" 		: onHandleMenuItemAppUninstall(); break;
+		case "ID_MENUITEM_APP_UPDATE" 			: onHandleMenuItemAppUpdate(); break;
+		case "ID_MENUITEM_APP_REINSTALL"		: onHandleMenuItemAppReinstall(); break;
+		case "ID_MENUITEM_APP_RUNNING"			: onHandleMenuItemAppRunning(); break;
 		case "ID_MENUITEM_APP_EXIT"				: onHandleMenuItemAppForceExit(); break;
 		case "ID_MENUITEM_APP_REINSTALL_RUN" 	: onHandleMenuItemAppReinstallRun(); break;
 		case "ID_MENUITEM_APP_INFO_COPY"		: onHandleMenuItemAppInfoCopy(); break;
 		case "ID_MENUITEM_SCREEN_VIEW"			: onHandleMenuItemScreenView(); break;
 		case "ID_MENUITEM_OPEN_SHELL"			: onHandleMenuItemOpenShell(); break;
+		case "ID_MENUITEM_FILE_PUSH_PULL"		: onHandleMenuItemFilePushPull(); break;
+		case "ID_MENUITEM_INSTALL_APPLIST"		: onHandleMenuItemInstalledAppList(); break;
 		default : System.out.println( "handleMenuItem : " + obj.toString());
 		}
+	}
+
+	private void onHandleMenuItemInstalledAppList() {
+		AndroidDeviceDataIF data = deviceListTableView.getSelectionModel().getSelectedItem();
+		if( data == null ) return;
+		
+		Platform.runLater( new Runnable() {
+			@Override
+			public void run() {
+				try {
+					FXMLLoader loader = new FXMLLoader( getClass().getResource( "apps/DeviceAppList.fxml" ));
+					
+					Stage stage = new Stage();
+					stage.setTitle( String.format( "%s ( Android %s ) - Installed Apps", data.getModel(), data.getOsVersion()) );
+					stage.setScene( new Scene( loader.load() ));
+					
+					DeviceAppListController ctrl = loader.getController();
+					ctrl.setDevice( data );
+					
+					stage.show();
+								
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}});
+		
+	}
+
+	private void onHandleMenuItemFilePushPull() {
+		AndroidDeviceDataIF data = deviceListTableView.getSelectionModel().getSelectedItem();
+		if( data == null ) return;
+		
+		Platform.runLater( new Runnable() {
+			@Override
+			public void run() {
+				try {
+					FXMLLoader loader = new FXMLLoader( getClass().getResource( "filetransfer/FileTransfer.fxml" ));
+					
+					Stage stage = new Stage();
+					stage.setTitle( String.format( "%s ( Android %s ) - File Transfer", data.getModel(), data.getOsVersion()) );
+					stage.setScene( new Scene( loader.load() ));
+					
+					FileTransferController ctrl = loader.getController();
+					ctrl.setDevice( data );
+					
+					//stage.setOnCloseRequest( event-> { ctrl.terminate(); });
+					stage.show();
+								
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}});
 	}
 
 	private void onHandleMenuItemOpenShell() {
@@ -257,7 +315,7 @@ public class MainSceneHandler {
 	}
 
 	private void onHandleMenuItemAppInstall() {
-		File appFile = filedialog("Install APP(APK/AAB) File chooser");
+		File appFile = filedialog("Install APP(APK/AAB/APKS) File chooser");
 		if( appFile == null ) return ;
 				
 		AndroidAPP app = new AndroidAPP( appFile );
@@ -316,6 +374,8 @@ public class MainSceneHandler {
 			return selectiveFile;
 		}
 		
+		return Utils.fileDialog(title, "*.apk; *.aab", true );
+		/*
 		java.awt.FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, FileDialog.LOAD );
 		dialog.setFile("*.apk; *.aab");
 		dialog.setFilenameFilter(new FilenameFilter() {
@@ -333,6 +393,7 @@ public class MainSceneHandler {
 		if( filename == null ) return null;
 		
 		return new File( pathname, filename );
+		*/
 	}
 }
 	

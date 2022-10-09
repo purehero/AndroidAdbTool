@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<TableView fx:id="appListTableView" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.apps.DeviceAppListController">
+  <columns>
+    <TableColumn prefWidth="33.0">
+         <graphic>
+            <CheckBox fx:id="ID_CHECKBOX_SELECT_ALL" mnemonicParsing="false" onAction="#handle" />
+         </graphic></TableColumn>
+      <TableColumn prefWidth="250.0" text="PackageName" />
+      <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="480.0" text="Path" />
+  </columns>
+   <contextMenu>
+      <ContextMenu>
+        <items>
+            <MenuItem fx:id="ID_MENUITEM_APP_UNINSTALL" mnemonicParsing="false" onAction="#handle">
+               <graphic>
+                  <BorderPane prefWidth="200.0">
+                     <left>
+                        <Label text="삭제" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                        </Label>
+                     </left>
+                     <right>
+                        <Label alignment="CENTER_RIGHT" text="Uninstall" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                        </Label>
+                     </right>
+                  </BorderPane>
+               </graphic>
+            </MenuItem>
+            <MenuItem fx:id="ID_MENUITEM_APP_EXPORT" mnemonicParsing="false" onAction="#handle">
+               <graphic>
+                  <BorderPane prefWidth="200.0">
+                     <left>
+                        <Label text="추출" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                        </Label>
+                     </left>
+                     <right>
+                        <Label alignment="CENTER_RIGHT" text="Export" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                        </Label>
+                     </right>
+                  </BorderPane>
+               </graphic>
+            </MenuItem>
+        </items>
+      </ContextMenu>
+   </contextMenu>
+</TableView>
